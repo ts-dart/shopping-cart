@@ -12,10 +12,7 @@ function createCustomElement(element, className, innerText) {
   return e;
 }
 
-async function createProductItemElement(/*{ sku, name, image }*/) {
-  const object = await fetchProducts('computador');
-  const array = await object.results;
-
+function createProductItemElement(array) {
   const section = document.createElement('section');
   section.className = 'item';
 
@@ -30,8 +27,11 @@ async function createProductItemElement(/*{ sku, name, image }*/) {
 }
 
 async function addProductsInContainer() {
+  const object = await fetchProducts('computador');
+  const array = await object.results;
+
   const container = document.querySelector('.items');
-  container.appendChild((await createProductItemElement()));
+  container.appendChild((createProductItemElement(array)));
 }
 
 function getSkuFromProductItem(item) {
