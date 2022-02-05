@@ -26,12 +26,16 @@ function createProductItemElement(array) {
   return sec;
 }
 
+function cartItemClickListener(evento) {
+  // coloque seu código aqui
+  document.querySelector('.cart__items').removeChild(evento.target);
+}
+
 function createCartItemElement(product) {
-  console.log(product);
   const li = document.createElement('li');
   li.className = 'cart__item';
   li.innerText = `SKU: ${product.id} | NAME: ${product.title} | PRICE: $${product.price}`;
-  // li.addEventListener('click', cartItemClickListener);
+  li.addEventListener('click', (evento) => cartItemClickListener(evento));
   return li;
 }
 
@@ -64,10 +68,6 @@ async function addProductsInContainer() {
 
 function getSkuFromProductItem(item) {
   return item.querySelector('span.item__sku').innerText;
-}
-
-function cartItemClickListener(event) {
-  // coloque seu código aqui
 }
 
 window.onload = () => {
