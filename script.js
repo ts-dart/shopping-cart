@@ -8,35 +8,14 @@ function totalPrice() {
     sum += number;
   }
 
-  div.innerText = `Subtotal: ${sum}`;
+  div.innerText = sum;
 }
 
-function createProductImageElement(imageSource) {
-  const img = document.createElement('img');
-  img.className = 'item__image';
-  img.src = imageSource;
-  return img;
-}
-
-function createCustomElement(element, className, innerText) {
-  const e = document.createElement(element);
-  e.className = className;
-  e.innerText = innerText;
-  return e;
-}
-
-function createProductItemElement(array) {
-  const sec = document.createElement('section');
-  sec.className = 'item';
-  
-  array.forEach((p) => {
-    sec.appendChild(createCustomElement('span', p.id, p.id));
-    sec.appendChild(createCustomElement('span', p.title, p.title));
-    sec.appendChild(createProductImageElement(p.thumbnail));
-    sec.appendChild(createCustomElement('button', `item__add ${p.id}`, 'Adicionar ao carrinho!'));
+function clearShoppingCart() {
+  document.querySelector('.empty-cart').addEventListener('click', () => {
+    document.querySelector('#cartItems').innerHTML = '';
+    totalPrice();
   });
-
-  return sec;
 }
 
 function cartItemClickListener(evento) {
@@ -72,20 +51,47 @@ function getIdMlb() {
   }));
 }
 
+function createProductImageElement(imageSource) {
+  const img = document.createElement('img');
+  img.className = 'item__image';
+  img.src = imageSource;
+  return img;
+}
+
+function createCustomElement(element, className, innerText) {
+  const e = document.createElement(element);
+  e.className = className;
+  e.innerText = innerText;
+  return e;
+}
+
+function createProductItemElement(id, title, thumbnail) {
+  sec = document.createElement('section');
+  sec.className = 'item';
+
+  sec.appendChild(createCustomElement('span', id, id));
+  sec.appendChild(createCustomElement('span', title, title));
+  sec.appendChild(createProductImageElement(thumbnail));
+  sec.appendChild(createCustomElement('button', `item__add ${id}`, 'Adicionar ao carrinho!'));
+
+  return sec;
+}
+
 async function addProductsInContainer() {
   const object = await fetchProducts('computador');
   const array = await object.results;
-  
-  const container = document.querySelector('.items');
-  container.appendChild((createProductItemElement(array)));
+
+  const contain = document.querySelector('.items');
+  array.forEach((p) => contain.appendChild((createProductItemElement(p.id, p.title, p.thumbnail))));
 
   getIdMlb();
 }
-/*
+
 function getSkuFromProductItem(item) {
   return item.querySelector('span.item__sku').innerText;
 }
-*/
+
 window.onload = () => {
   addProductsInContainer();
+  clearShoppingCart();
 };
