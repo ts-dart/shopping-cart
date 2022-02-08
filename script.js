@@ -107,14 +107,8 @@ async function addProductsInContainer() {
 
   getIdMlb();
 }
-/*
-async function loading() {
-  const promise = fetchProducts('computador');
-  console.log(promise.resolve('sucess'));
-}
-*/
+
 window.onload = () => {
-  // loading();
   showItemsFromLocalStorage();
   addProductsInContainer();
   clearShoppingCart();
