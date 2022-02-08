@@ -1,5 +1,5 @@
 function totalPrice() {
-  const ol = document.querySelector('#cartItems');
+  const ol = document.querySelector('.cart__items3');
   const div = document.querySelector('.total-price');
   let sum = 0;
 
@@ -9,11 +9,13 @@ function totalPrice() {
   }
 
   div.innerText = sum;
+  saveCartItems(sum);
 }
 
 function clearShoppingCart() {
   document.querySelector('.empty-cart').addEventListener('click', () => {
-    document.querySelector('#cartItems').innerHTML = '';
+    document.querySelector('.cart__items2').innerHTML = '';
+    localStorage.clear();
     totalPrice();
   });
 }
@@ -22,14 +24,36 @@ function cartItemClickListener(evento) {
   // coloque seu código aqui
   document.querySelector('.cart__items').removeChild(evento.target);
   totalPrice();
+  saveCartItems();
 }
 
+function showItemsFromLocalStorage() {
+  if (getSavedCartItems() !== 'No items saved in cart') {
+    getSavedCartItems().forEach((cartItem) => {
+      const li = document.createElement('li');
+      li.className = 'cart__item';
+      li.innerHTML = cartItem;
+      li.addEventListener('click', (evento) => cartItemClickListener(evento));
+      document.querySelector('.cart__items2').appendChild(li);
+    });
+    document.querySelector('.total-price').innerHTML = localStorage.getItem('totalPrice');
+  }
+}
+
+function getSkuFromProductItem(item) {
+  return item.querySelector('span.item__sku').innerText;
+}
+
+const fromStorage = [];
 function createCartItemElement(product) {
   const li = document.createElement('li');
   li.className = 'cart__item';
   li.innerText = `SKU: ${product.id} | NAME: ${product.title} | PRICE: $${product.price}`;
   li.id = product.price;
   li.addEventListener('click', (evento) => cartItemClickListener(evento));
+
+  fromStorage.push(`SKU: ${product.id} | NAME: ${product.title} | PRICE: $${product.price};`);
+  saveCartItems(fromStorage);
   return li;
 }
 
@@ -37,6 +61,7 @@ function addProductsInCartItems(obj) {
   const ol = document.querySelector('.cart__items');
   ol.appendChild(createCartItemElement(obj));
   totalPrice();
+  saveCartItems();
 }
 
 async function getProduct(product) {
@@ -86,12 +111,15 @@ async function addProductsInContainer() {
 
   getIdMlb();
 }
-
-function getSkuFromProductItem(item) {
-  return item.querySelector('span.item__sku').innerText;
+/*
+async function loading() {
+  const promise = fetchProducts('computador');
+  console.log(promise.resolve('sucess'));
 }
-
+*/
 window.onload = () => {
+  // loading();
+  showItemsFromLocalStorage();
   addProductsInContainer();
   clearShoppingCart();
 };
