@@ -9,7 +9,7 @@ function totalPrice() {
   }
 
   div.innerText = sum;
-  saveCartItems(sum);
+  localStorage.setItem('totalPrice', sum);
 }
 
 function clearShoppingCart() {
