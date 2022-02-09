@@ -28,7 +28,7 @@ function cartItemClickListener(evento) {
 }
 
 function showItemsFromLocalStorage() {
-  if (getSavedCartItems() !== 'No items saved in cart') {
+  if (getSavedCartItems() !== undefined) {
     getSavedCartItems().forEach((cartItem) => {
       const li = document.createElement('li');
       li.className = 'cart__item';

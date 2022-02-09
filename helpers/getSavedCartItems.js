@@ -1,12 +1,14 @@
-const getSavedCartItems = () => {
+const getSavedCartItems = (test) => {
   // seu código aqui
-  const items = localStorage.getItem('cartItems');
-  if (items !== null && items !== undefined) {
-    const array = items.split(';');
-    array.pop();
-    return array;
+  const values = localStorage.getItem('cartItems');
+  let result;
+  
+  if (values !== null || test) {
+    const items = String(values);
+    result = items.split(';');
+    result.pop();
+    return result;
   }
-  return 'No items saved in cart';
 };
 
 if (typeof module !== 'undefined') {
