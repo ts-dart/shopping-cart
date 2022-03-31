@@ -98,9 +98,23 @@ function createProductItemElement(id, title, thumbnail) {
   return sec;
 }
 
+function loading(object) {
+  if (typeof object !== 'object') {
+    const div = document.createElement('div');
+    div.classList.add('loading');
+    div.innerHTML = 'carregando...';
+
+    document.body.appendChild(div);
+  } else {
+    const div = document.querySelector('.loading');
+    document.body.removeChild(div);
+  }
+}
+
 async function addProductsInContainer() {
   const object = await fetchProducts('computador');
   const array = await object.results;
+  loading(object);
 
   const contain = document.querySelector('.items');
   array.forEach((p) => contain.appendChild((createProductItemElement(p.id, p.title, p.thumbnail))));
@@ -109,6 +123,7 @@ async function addProductsInContainer() {
 }
 
 window.onload = () => {
+  loading('object');
   showItemsFromLocalStorage();
   addProductsInContainer();
   clearShoppingCart();
